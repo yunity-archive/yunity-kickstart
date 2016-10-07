@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @sharer.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @sharer.email %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @sharer.city %>
+</p>
+
+<%= link_to 'Edit', edit_sharer_path(@sharer) %> |
+<%= link_to 'Back', sharers_path %>

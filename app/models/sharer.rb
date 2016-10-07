@@ -1,0 +1,2 @@
+class Sharer < ApplicationRecord
+end
