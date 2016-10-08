@@ -21,6 +21,12 @@ class SharersController < ApplicationController
   def edit
   end
 
+  def signup_confirmation
+    @city = params[:city]
+    @sharer_count = params[:sharer_count]
+    @explanation_text = params[:explanation_text]
+  end
+
   # POST /sharers
   # POST /sharers.json
   def create
@@ -28,8 +34,22 @@ class SharersController < ApplicationController
 
     respond_to do |format|
       if @sharer.save
-        format.html { redirect_to @sharer, notice: 'Sharer was successfully created.' }
-        format.json { render :show, status: :created, location: @sharer }
+
+        @city = sharer_params["city"]
+        sharer_count = Sharer.where(city: @city).count
+
+        if sharer_count < 100
+          @sharer_count = 100 - sharer_count
+          @explanation_text = "We need #{@sharer_count} more sharers to signup in your city before we can start!"
+        else
+          @sharer_count = sharer_count
+          @explanation_text = "Foodsharing has started alreadhy in your city. There are #{@sharer_count} share in your city."
+        end
+        
+        puts @sharer_count
+        format.html { redirect_to :controller => 'sharers', :action => 'signup_confirmation', :city=>@city, :sharer_count=>@sharer_count, :explanation_text=>@explanation_text}
+        #format.html { redirect_to '/signup_confirmation'}
+        #format.json { render :show, status: :created, location: @sharer }
       else
         format.html { render :new }
         format.json { render json: @sharer.errors, status: :unprocessable_entity }
