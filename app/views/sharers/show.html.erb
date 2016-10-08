@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
 
+<% if admin_signed_in? %>
 <p>
   <strong>Name:</strong>
   <%= @sharer.name %>
@@ -9,11 +10,27 @@
   <strong>Email:</strong>
   <%= @sharer.email %>
 </p>
+<% end %>
 
 <p>
   <strong>City:</strong>
   <%= @sharer.city %>
 </p>
 
+<% @count = 100 - Sharer.where(city: @sharer.city).count %>
+<% if @count < 100%>
+	<p>
+	  <strong>COUNT DOWN TO HOW MANY PEOPLE NEEDED TO START YUNITY:</strong>
+	  <%= 100 - Sharer.where(city: @sharer.city).count %>
+	</p>
+<% else %>
+	<p>
+	  <strong>People signed up in your city:</strong>
+	  <%= Sharer.where(city: @sharer.city).count %>
+	</p>
+<% end %>
+
+<% if admin_signed_in? %>
 <%= link_to 'Edit', edit_sharer_path(@sharer) %> |
 <%= link_to 'Back', sharers_path %>
+<% end %>

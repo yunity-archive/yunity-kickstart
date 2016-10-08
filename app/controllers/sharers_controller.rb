@@ -1,5 +1,5 @@
 class SharersController < ApplicationController
-  before_action :authenticate_admin!, only: [:show, :edit, :update, :destroy, :index]
+  before_action :authenticate_admin!, only: [:edit, :update, :destroy, :index]
   before_action :set_sharer, only: [:show, :edit, :update, :destroy]
 
   # GET /sharers
