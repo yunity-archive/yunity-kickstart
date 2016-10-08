@@ -3,9 +3,41 @@
   <head>
     <title>YunityKickstartCounter</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"
+        async defer></script>
+
+<script>
+
+function initMap() {
+  var input = document.getElementById('pac-input');
+  
+
+  var autocomplete = new google.maps.places.Autocomplete(input);
+ 
+  autocomplete.addListener('place_changed', function() {
+    var place = autocomplete.getPlace();
+    if (!place.geometry) {
+      window.alert("Autocomplete's returned place contains no geometry");
+      return;
+    }
+
+    var address = '';
+    if (place.address_components) {
+      address = [
+        (place.address_components[0] && place.address_components[0].short_name || ''),
+        (place.address_components[1] && place.address_components[1].short_name || ''),
+        (place.address_components[2] && place.address_components[2].short_name || '')
+      ].join(' ');
+    }
+
+    document.getElementById('placeInfo').innerHTML = '<div><strong>' + place.name + '</strong><br>' + address;    
+  });
+}
+
+</script>
   </head>
 
   <body>

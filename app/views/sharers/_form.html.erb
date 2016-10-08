@@ -1,32 +1,69 @@
-<%= form_for(@sharer) do |f| %>
-  <% if @sharer.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@sharer.errors.count, "error") %> prohibited this sharer from being saved:</h2>
+<div class="signup-form">
+  <script>
 
-      <ul>
-      <% @sharer.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+  initMap();
+
+  function initMap() {
+    var input = document.getElementById('pac-input');
+    
+
+    var autocomplete = new google.maps.places.Autocomplete(input);
+   
+    autocomplete.addListener('place_changed', function() {
+      var place = autocomplete.getPlace();
+      if (!place.geometry) {
+        window.alert("Autocomplete's returned place contains no geometry");
+        return;
+      }
+
+      var address = '';
+      if (place.address_components) {
+        address = [
+          (place.address_components[0] && place.address_components[0].short_name || ''),
+          (place.address_components[1] && place.address_components[1].short_name || ''),
+          (place.address_components[2] && place.address_components[2].short_name || '')
+        ].join(' ');
+      }
+
+      document.getElementById('placeInfo').value = address;    
+    });
+  }
+
+  </script>
+
+
+  <%= form_for @sharer, :remote => true do |f| %>
+    <% if @sharer.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@sharer.errors.count, "error") %> prohibited this sharer from being saved:</h2>
+
+        <ul>
+        <% @sharer.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.text_field :name, :placeholder => 'Name' %>
+    </div>
+
+    <div class="field">
+      <%= f.text_field :email, :placeholder => 'Email' %>
+    </div>
+
+    <div class="field">
+      <% if @city.present? %>
+      <input id="pac-input" class="controls" type="text" value="<%= @city %>"/>
+      <% else %>
+      <input id="pac-input" class="controls" type="text" placeholder="City"/>
       <% end %>
-      </ul>
+      <%= f.hidden_field :city, :id => 'placeInfo' %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
-
-  <div class="field">
-    <%= f.label :city %>
-    <%= f.text_field :city %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
