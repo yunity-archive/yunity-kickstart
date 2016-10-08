@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'devise'
 gem 'sparkpost_rails' # For emailing.
 gem 'figaro' # Hides passwords
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
