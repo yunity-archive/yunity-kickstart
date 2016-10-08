@@ -31,28 +31,30 @@ class SharersController < ApplicationController
   # POST /sharers.json
   def create
     @sharer = Sharer.new(sharer_params)
+    @city = sharer_params["city"]
 
     respond_to do |format|
       if @sharer.save
 
-        @city = sharer_params["city"]
+        
         sharer_count = Sharer.where(city: @city).count
+        puts sharer_count
 
         if sharer_count < 100
           @sharer_count = 100 - sharer_count
           @explanation_text = "We need #{@sharer_count} more sharers to signup in your city before we can start!"
         else
           @sharer_count = sharer_count
-          @explanation_text = "Foodsharing has started alreadhy in your city. There are #{@sharer_count} share in your city."
+          @explanation_text = "Foodsharing has started already in your city. There are #{@sharer_count} share in your city."
         end
+        puts @explanation_text
+        SignupConfirmationMailer.signup_confirmation_email(@sharer, @explanation_text).deliver # Sends email
         
-        puts @sharer_count
         format.html { redirect_to :controller => 'sharers', :action => 'signup_confirmation', :city=>@city, :sharer_count=>@sharer_count, :explanation_text=>@explanation_text}
         #format.html { redirect_to '/signup_confirmation'}
-        #format.json { render :show, status: :created, location: @sharer }
       else
-        format.html { render :new }
-        format.json { render json: @sharer.errors, status: :unprocessable_entity }
+        format.js
+        #format.html { redirect_to '/landing' }
       end
     end
   end
