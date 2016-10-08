@@ -8,6 +8,7 @@
       <th>Name</th>
       <th>Email</th>
       <th>City</th>
+      <th>Nr up signups for city</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,6 +19,7 @@
         <td><%= sharer.name %></td>
         <td><%= sharer.email %></td>
         <td><%= sharer.city %></td>
+        <td><%= Sharer.where(city: sharer.city).count %></td>
         <td><%= link_to 'Show', sharer %></td>
         <td><%= link_to 'Edit', edit_sharer_path(sharer) %></td>
         <td><%= link_to 'Destroy', sharer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
