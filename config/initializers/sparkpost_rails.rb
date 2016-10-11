@@ -1,6 +1,6 @@
 SparkPostRails.configure do |c|
   c.api_key = ENV['SPARKPOST_API_KEY']
-  c.sandbox = true                                # default: false
+  c.sandbox = Rails.env.development?              # default: false
   c.track_opens = true                            # default: false
   c.track_clicks = true                           # default: false
   #c.return_path = 'BOUNCE-EMAIL@YOUR-DOMAIN.COM'  # default: nil

@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'yunity@sparkpostbox.com'
+  default from: 'glocal@yunity.org'
   layout 'mailer'
 end
